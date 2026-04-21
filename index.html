@@ -31,8 +31,7 @@
   --accent-bright: #a78bfa;
   --amber: #f59e0b;
   --green: #34d399;
-  --phone-w: 280px;
-  --phone-h: 580px;
+  --screen-w: 280px;
   --font-display: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -160,7 +159,7 @@ body::after {
   font-weight: 500;
 }
 
-/* ── Phone Mockup ── */
+/* ── Screen Image ── */
 .phone-wrapper {
   display: flex;
   justify-content: center;
@@ -170,97 +169,56 @@ body::after {
 
 .phone-frame {
   position: relative;
-  width: var(--phone-w);
-  height: var(--phone-h);
-  border-radius: 44px;
-  background: #111114;
-  border: 2.5px solid rgba(255,255,255,0.08);
+  width: var(--screen-w);
+  border-radius: 20px;
   overflow: hidden;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.03),
-    0 30px 100px -20px rgba(0,0,0,0.8),
-    0 0 80px -20px rgba(139,92,246,0.15),
-    inset 0 0 30px rgba(0,0,0,0.3);
+    0 25px 80px -15px rgba(0,0,0,0.6),
+    0 0 60px -15px rgba(139,92,246,0.12);
   will-change: transform;
   transition: box-shadow 0.3s ease;
 }
 
 .phone-frame:hover {
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.05),
-    0 40px 120px -20px rgba(0,0,0,0.8),
-    0 0 120px -20px rgba(139,92,246,0.25),
-    inset 0 0 30px rgba(0,0,0,0.3);
+    0 35px 100px -15px rgba(0,0,0,0.7),
+    0 0 90px -15px rgba(139,92,246,0.2);
 }
 
 .phone-frame img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
+  border-radius: 20px;
 }
 
-.phone-notch {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 28px;
-  background: #111114;
-  border-radius: 0 0 18px 18px;
-  z-index: 2;
-}
-
-.phone-notch::after {
-  content: '';
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #1a1a1e;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.phone-reflection {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(165deg, rgba(255,255,255,0.06) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.02) 100%);
-  z-index: 3;
-  pointer-events: none;
-  border-radius: 44px;
-}
-
-/* ── Phone Stack (Multi-Device) ── */
-.phone-stack {
+/* ── Screen Stack (Multi-Device) ── */
+.screen-stack {
   position: relative;
   width: 520px;
   height: 520px;
   perspective: 1400px;
 }
 
-.phone-stack .phone-frame {
+.screen-stack .phone-frame {
   position: absolute;
   top: 50%;
   left: 50%;
 }
 
-.phone-stack .phone-frame:nth-child(1) {
-  transform: translate(-70%, -40%) rotateY(14deg) rotateX(-4deg) scale(0.82);
+.screen-stack .phone-frame:nth-child(1) {
+  transform: translate(-75%, -35%) rotateY(14deg) rotateX(-4deg) scale(0.72);
   z-index: 1;
-  opacity: 0.7;
+  opacity: 0.65;
 }
-.phone-stack .phone-frame:nth-child(2) {
-  transform: translate(-40%, -50%) rotateY(-6deg) rotateX(2deg) scale(0.92);
+.screen-stack .phone-frame:nth-child(2) {
+  transform: translate(-45%, -50%) rotateY(-6deg) rotateX(2deg) scale(0.88);
   z-index: 2;
 }
-.phone-stack .phone-frame:nth-child(3) {
-  transform: translate(-15%, -60%) rotateY(-18deg) rotateX(6deg) scale(0.78);
+.screen-stack .phone-frame:nth-child(3) {
+  transform: translate(-15%, -65%) rotateY(-18deg) rotateX(6deg) scale(0.68);
   z-index: 0;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 /* ── Hero Section ── */
@@ -786,11 +744,10 @@ body::after {
   .scene-label { justify-content: center; }
   .scene-label::before { display: none; }
   .phone-frame {
-    --phone-w: 220px;
-    --phone-h: 460px;
+    --screen-w: 220px;
   }
-  .phone-stack {
-    width: 340px;
+  .screen-stack {
+    width: 300px;
     height: 380px;
   }
   .stats-bar {
@@ -807,8 +764,7 @@ body::after {
 @media (max-width: 480px) {
   .scene { padding: 4rem 1.25rem; }
   .phone-frame {
-    --phone-w: 180px;
-    --phone-h: 380px;
+    --screen-w: 160px;
   }
   .stats-bar { gap: 1.5rem; padding: 3rem 1rem; }
   .stat-value { font-size: 2.2rem; }
@@ -857,9 +813,7 @@ body::after {
 
   <div class="hero-phone">
     <div class="phone-frame">
-      <div class="phone-notch"></div>
       <img src="assets/onboarding-welcome.png" alt="S.A.P.I.E.N. welcome screen" loading="eager">
-      <div class="phone-reflection"></div>
     </div>
   </div>
 
@@ -914,9 +868,7 @@ body::after {
     </div>
     <div class="phone-wrapper">
       <div class="phone-frame" data-parallax data-depth="0.5">
-        <div class="phone-notch"></div>
         <img src="assets/ai-chat.png" alt="AI chat interface with model selector" loading="lazy">
-        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -946,9 +898,7 @@ body::after {
     </div>
     <div class="phone-wrapper">
       <div class="phone-frame" data-parallax data-depth="0.6">
-        <div class="phone-notch"></div>
         <img src="assets/ai-browser.png" alt="AI browser with tool call interface" loading="lazy">
-        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -978,9 +928,7 @@ body::after {
     </div>
     <div class="phone-wrapper">
       <div class="phone-frame" data-parallax data-depth="0.4">
-        <div class="phone-notch"></div>
         <img src="assets/memories.png" alt="Memories and knowledge management" loading="lazy">
-        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -1010,9 +958,7 @@ body::after {
     </div>
     <div class="phone-wrapper">
       <div class="phone-frame" data-parallax data-depth="0.55">
-        <div class="phone-notch"></div>
         <img src="assets/automations.png" alt="Automations management screen" loading="lazy">
-        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -1040,21 +986,15 @@ body::after {
         <span class="pill">API</span>
       </div>
     </div>
-    <div class="phone-stack">
+    <div class="screen-stack">
       <div class="phone-frame" data-parallax data-depth="0.3">
-        <div class="phone-notch"></div>
         <img src="assets/onboarding-complete.png" alt="S.A.P.I.E.N. onboarding complete" loading="lazy">
-        <div class="phone-reflection"></div>
       </div>
       <div class="phone-frame" data-parallax data-depth="0.6">
-        <div class="phone-notch"></div>
         <img src="assets/settings.png" alt="S.A.P.I.E.N. Cloud settings" loading="lazy">
-        <div class="phone-reflection"></div>
       </div>
       <div class="phone-frame" data-parallax data-depth="0.9">
-        <div class="phone-notch"></div>
         <img src="assets/sign-in.png" alt="S.A.P.I.E.N. Cloud sign in" loading="lazy">
-        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -1139,7 +1079,7 @@ const vh = () => window.innerHeight;
 // Store base transforms for elements that have CSS-defined transforms
 // Capture eagerly before animations start, so we get the original CSS transform
 const baseTransforms = new Map();
-document.querySelectorAll('.hero-orb, .hero-grid, .float-shape, .phone-stack .phone-frame').forEach(el => {
+document.querySelectorAll('.hero-orb, .hero-grid, .float-shape, .screen-stack .phone-frame').forEach(el => {
   // Temporarily disable animation to read the base transform
   const anim = el.style.animation;
   el.style.animation = 'none';
