@@ -36,13 +36,21 @@ One AI agent that remembers, sees, automates, and acts.
 
 <div align="center">
 
-| AI Chat | AI Browser | Memories | Automations |
-|:---:|:---:|:---:|:---:|
-| <img src="assets/ai-chat.png" alt="AI Chat" width="200" /> | <img src="assets/ai-browser.png" alt="AI Browser" width="200" /> | <img src="assets/memories.png" alt="Memories" width="200" /> | <img src="assets/automations.png" alt="Automations" width="200" /> |
+| AI Chat | AI Browser |
+|:---:|:---:|
+| <img src="assets/ai-chat.png" alt="AI Chat" width="220" /> | <img src="assets/ai-browser.png" alt="AI Browser" width="220" /> |
 
-| Onboarding | Settings | Sign In | Complete |
-|:---:|:---:|:---:|:---:|
-| <img src="assets/onboarding-welcome.png" alt="Onboarding" width="200" /> | <img src="assets/settings.png" alt="Settings" width="200" /> | <img src="assets/sign-in.png" alt="Sign In" width="200" /> | <img src="assets/onboarding-complete.png" alt="Complete" width="200" /> |
+| Memories | Automations |
+|:---:|:---:|
+| <img src="assets/memories.png" alt="Memories" width="220" /> | <img src="assets/automations.png" alt="Automations" width="220" /> |
+
+| Onboarding | Settings |
+|:---:|:---:|
+| <img src="assets/onboarding-welcome.png" alt="Onboarding" width="220" /> | <img src="assets/settings.png" alt="Settings" width="220" /> |
+
+| Sign In | Complete |
+|:---:|:---:|
+| <img src="assets/sign-in.png" alt="Sign In" width="220" /> | <img src="assets/onboarding-complete.png" alt="Complete" width="220" /> |
 
 </div>
 
