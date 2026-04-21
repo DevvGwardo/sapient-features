@@ -739,6 +739,12 @@ body::after {
   transform: translateY(-7px) rotate(-45deg);
 }
 
+.hamburger:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
 .mobile-menu {
   position: fixed;
   inset: 0;
@@ -803,6 +809,11 @@ body::after {
   letter-spacing: 0.08em;
   border-top: 1px solid rgba(255,255,255,0.04);
   background: var(--bg-elevated);
+}
+
+/* ── Scroll offset for fixed nav ── */
+section[id] {
+  scroll-margin-top: var(--nav-h);
 }
 
 /* ── Reduced Motion ── */
@@ -1268,6 +1279,9 @@ function animateCounters() {
   });
 }
 
+// ── Disable heavy effects on touch/mobile ──
+const isMobile = 'ontouchstart' in window || window.innerWidth < 900;
+
 // ── Parallax Engine ──
 let ticking = false;
 const vh = () => window.innerHeight;
@@ -1288,8 +1302,11 @@ function updateParallax() {
   const scrollY = window.scrollY;
   const viewportH = vh();
 
-  // Nav visibility
+  // Nav visibility — always update regardless of mobile
   document.getElementById('nav').classList.toggle('show', scrollY > viewportH * 0.5);
+
+  // Skip heavy parallax transforms on mobile for performance
+  if (isMobile) return;
 
   // Phone parallax — 3D tilt based on viewport position
   // Only apply if mouse is NOT hovering the phone (mouse tilt takes priority)
@@ -1365,6 +1382,30 @@ function toggleMenu() {
 
 hamburger.addEventListener('click', toggleMenu);
 
+// Close menu on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && menuOpen) toggleMenu();
+});
+
+// Focus trap inside mobile menu
+const menuLinks = mobileMenu.querySelectorAll('a');
+const firstLink = menuLinks[0];
+const lastLink = menuLinks[menuLinks.length - 1];
+mobileMenu.addEventListener('keydown', e => {
+  if (e.key !== 'Tab' || !menuOpen) return;
+  if (e.shiftKey) {
+    if (document.activeElement === firstLink) {
+      e.preventDefault();
+      lastLink.focus();
+    }
+  } else {
+    if (document.activeElement === lastLink) {
+      e.preventDefault();
+      firstLink.focus();
+    }
+  }
+});
+
 // Close menu on link click
 mobileMenu.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', e => {
@@ -1374,8 +1415,10 @@ mobileMenu.querySelectorAll('a').forEach(a => {
   });
 });
 
-// ── Disable heavy effects on touch/mobile ──
-const isMobile = 'ontouchstart' in window || window.innerWidth < 900;
+// Close menu if window resizes past mobile breakpoint
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 900 && menuOpen) toggleMenu();
+});
 
 // ── Mouse Tilt on Phone Frames (desktop only) ──
 // Combine scroll parallax + mouse tilt into one transform to avoid flicker
