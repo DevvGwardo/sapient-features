@@ -5,42 +5,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>S.A.P.I.E.N. — Your Everything</title>
 <meta name="description" content="S.A.P.I.E.N. — the AI agent that does it all. Medicine reminders, vision, browsing, automations, memory, and more.">
+<meta property="og:title" content="S.A.P.I.E.N. — Your Everything">
+<meta property="og:description" content="One AI agent that remembers, sees, automates, and acts. Not a chatbot — a companion.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+
 <style>
-/* ── Reset ── */
+/* ── Reset & Base ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #09090b;
-  --fg: #fafafa;
-  --muted: #a1a1aa;
-  --accent: #a78bfa;
-  --accent2: #6d28d9;
+  --bg: #050507;
+  --bg-elevated: #0c0c10;
+  --fg: #eeeaef;
+  --fg-dim: #a09caf;
+  --muted: #6b6578;
+  --accent: #8b5cf6;
+  --accent-bright: #a78bfa;
+  --amber: #f59e0b;
   --green: #34d399;
   --phone-w: 280px;
   --phone-h: 580px;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 html {
   scroll-behavior: smooth;
   background: var(--bg);
   color: var(--fg);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   overflow-x: hidden;
   background: var(--bg);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--fg);
+}
+
+/* ── Noise Overlay ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px;
 }
 
 /* ── Utility ── */
-.sr-only {
-  position: absolute; width: 1px; height: 1px;
-  padding: 0; margin: -1px; overflow: hidden;
-  clip: rect(0,0,0,0); border: 0;
-}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
-/* ── Scene container ── */
+/* ── Scene Container ── */
 .scene {
   position: relative;
   min-height: 100vh;
@@ -48,7 +82,7 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
 }
 
 .scene-inner {
@@ -67,11 +101,11 @@ body {
   direction: ltr;
 }
 
-/* ── Text content ── */
+/* ── Text Content ── */
 .scene-text {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(60px);
+  transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo);
 }
 .scene-text.visible {
   opacity: 1;
@@ -79,52 +113,83 @@ body {
 }
 
 .scene-label {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--accent);
-  margin-bottom: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--accent-bright);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.scene-label::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
 }
 
 .scene-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
-  line-height: 1.1;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.05;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--fg) 0%, var(--muted) 100%);
+  letter-spacing: -0.02em;
+  background: linear-gradient(160deg, var(--fg) 20%, var(--fg-dim) 80%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .scene-desc {
-  font-size: 1.125rem;
-  line-height: 1.7;
-  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--fg-dim);
   max-width: 480px;
+  font-weight: 300;
 }
 
 .scene-desc strong {
   color: var(--fg);
-  font-weight: 600;
+  font-weight: 500;
 }
 
-/* ── Phone mockup ── */
+/* ── Phone Mockup ── */
+.phone-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
 .phone-frame {
   position: relative;
   width: var(--phone-w);
   height: var(--phone-h);
-  border-radius: 40px;
-  background: #1a1a1d;
-  border: 3px solid #333;
+  border-radius: 44px;
+  background: #111114;
+  border: 2.5px solid rgba(255,255,255,0.08);
   overflow: hidden;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.05),
-    0 25px 80px -15px rgba(0,0,0,0.7),
-    0 0 120px -30px var(--accent2);
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 30px 100px -20px rgba(0,0,0,0.8),
+    0 0 80px -20px rgba(139,92,246,0.15),
+    inset 0 0 30px rgba(0,0,0,0.3);
   will-change: transform;
-  transition: transform 0.1s linear;
+  transition: box-shadow 0.3s ease;
+}
+
+.phone-frame:hover {
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05),
+    0 40px 120px -20px rgba(0,0,0,0.8),
+    0 0 120px -20px rgba(139,92,246,0.25),
+    inset 0 0 30px rgba(0,0,0,0.3);
 }
 
 .phone-frame img {
@@ -139,42 +204,65 @@ body {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;
-  height: 30px;
-  background: #1a1a1d;
-  border-radius: 0 0 20px 20px;
+  width: 120px;
+  height: 28px;
+  background: #111114;
+  border-radius: 0 0 18px 18px;
   z-index: 2;
 }
 
-/* ── Phone stack (scene 6) ── */
+.phone-notch::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1a1a1e;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.phone-reflection {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(165deg, rgba(255,255,255,0.06) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.02) 100%);
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 44px;
+}
+
+/* ── Phone Stack (Multi-Device) ── */
 .phone-stack {
   position: relative;
-  width: 500px;
-  height: 500px;
-  perspective: 1200px;
+  width: 520px;
+  height: 520px;
+  perspective: 1400px;
 }
 
 .phone-stack .phone-frame {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .phone-stack .phone-frame:nth-child(1) {
-  transform: translate(-65%, -45%) rotateY(12deg) rotateX(-3deg) scale(0.85);
+  transform: translate(-70%, -40%) rotateY(14deg) rotateX(-4deg) scale(0.82);
   z-index: 1;
+  opacity: 0.7;
 }
 .phone-stack .phone-frame:nth-child(2) {
-  transform: translate(-35%, -50%) rotateY(-5deg) rotateX(2deg) scale(0.95);
+  transform: translate(-40%, -50%) rotateY(-6deg) rotateX(2deg) scale(0.92);
   z-index: 2;
 }
 .phone-stack .phone-frame:nth-child(3) {
-  transform: translate(-10%, -55%) rotateY(-15deg) rotateX(5deg) scale(0.8);
+  transform: translate(-15%, -60%) rotateY(-18deg) rotateX(6deg) scale(0.78);
   z-index: 0;
+  opacity: 0.6;
 }
 
-/* ── Hero ── */
+/* ── Hero Section ── */
 .hero-scene {
   min-height: 100vh;
   display: flex;
@@ -183,36 +271,91 @@ body {
   justify-content: center;
   text-align: center;
   position: relative;
+  overflow: hidden;
 }
 
-.hero-bg-glow {
+.hero-orb {
   position: absolute;
-  width: 600px;
-  height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--accent2) 0%, transparent 70%);
-  opacity: 0.15;
   filter: blur(80px);
-  animation: pulseGlow 6s ease-in-out infinite;
   pointer-events: none;
+  will-change: transform;
 }
 
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.1; transform: scale(1); }
-  50% { opacity: 0.2; transform: scale(1.15); }
+.hero-orb-1 {
+  width: 700px;
+  height: 700px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%);
+  animation: orbFloat1 8s ease-in-out infinite;
+}
+
+.hero-orb-2 {
+  width: 400px;
+  height: 400px;
+  top: 30%;
+  left: 70%;
+  background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+  animation: orbFloat2 10s ease-in-out infinite;
+}
+
+.hero-orb-3 {
+  width: 300px;
+  height: 300px;
+  bottom: 20%;
+  left: 20%;
+  background: radial-gradient(circle, rgba(52,211,153,0.06) 0%, transparent 70%);
+  animation: orbFloat3 12s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  50% { transform: translate(-50%, -55%) scale(1.15); opacity: 1; }
+}
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 20px) scale(1.1); }
+}
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -30px) scale(1.2); }
+}
+
+/* Grid lines in hero */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image:
+    linear-gradient(var(--accent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 100%);
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 999px;
-  border: 1px solid rgba(167,139,250,0.3);
-  background: rgba(167,139,250,0.08);
-  font-size: 0.8rem;
-  color: var(--accent);
-  margin-bottom: 2rem;
+  border: 1px solid rgba(139,92,246,0.25);
+  background: rgba(139,92,246,0.06);
+  backdrop-filter: blur(12px);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-bright);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: revealUp 0.8s var(--ease-out-expo) 0.3s forwards;
 }
 
 .hero-badge .dot {
@@ -220,96 +363,274 @@ body {
   height: 6px;
   border-radius: 50%;
   background: var(--green);
-  animation: blink 2s ease-in-out infinite;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+  50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(52,211,153,0); }
 }
 
 .hero-title {
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 11vw, 8rem);
   font-weight: 800;
-  line-height: 0.95;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.03em;
+  line-height: 0.9;
+  margin-bottom: 1.75rem;
+  letter-spacing: -0.04em;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: revealUp 1s var(--ease-out-expo) 0.5s forwards;
 }
 
 .hero-title .accent-text {
-  background: linear-gradient(135deg, var(--accent) 0%, #e879f9 50%, var(--accent) 100%);
-  background-size: 200% 200%;
+  background: linear-gradient(135deg, var(--accent-bright) 0%, #e879f9 40%, var(--amber) 100%);
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: gradientShift 4s ease-in-out infinite;
+  animation: gradientFlow 6s ease-in-out infinite;
 }
 
-@keyframes gradientShift {
+@keyframes gradientFlow {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
 
 .hero-subtitle {
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  color: var(--muted);
-  max-width: 520px;
-  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  color: var(--fg-dim);
+  max-width: 480px;
+  line-height: 1.65;
   margin-bottom: 3rem;
+  font-weight: 300;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: revealUp 1s var(--ease-out-expo) 0.7s forwards;
+}
+
+@keyframes revealUp {
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .hero-phone {
-  margin-top: 3rem;
-  animation: float 6s ease-in-out infinite;
+  margin-top: 2rem;
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  animation: revealPhone 1.2s var(--ease-out-expo) 1s forwards;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+@keyframes revealPhone {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.hero-phone .phone-frame {
+  animation: heroFloat 7s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+  25% { transform: translateY(-12px) rotateX(1deg) rotateY(-1deg); }
+  50% { transform: translateY(-22px) rotateX(0deg) rotateY(0deg); }
+  75% { transform: translateY(-10px) rotateX(-1deg) rotateY(1deg); }
 }
 
 .scroll-hint {
   position: absolute;
-  bottom: 2rem;
+  bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   color: var(--muted);
-  font-size: 0.75rem;
-  animation: fadeInUp 1s ease 1.5s both;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: revealUp 0.8s var(--ease-out-expo) 2s forwards;
 }
 
-.scroll-hint .arrow {
-  width: 20px;
-  height: 20px;
-  border-right: 2px solid var(--muted);
-  border-bottom: 2px solid var(--muted);
-  transform: rotate(45deg);
-  animation: bounce 2s ease-in-out infinite;
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: rotate(45deg) translateY(0); }
-  50% { transform: rotate(45deg) translateY(6px); }
+@keyframes scrollPulse {
+  0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+  50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  51% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 1; }
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ── Stats Bar ── */
+.stats-bar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  padding: 4rem 2rem;
+  background: var(--bg-elevated);
+  border-top: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  overflow: hidden;
 }
 
-/* ── CTA scene ── */
+.stats-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.03), transparent);
+  pointer-events: none;
+}
+
+.stat {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+}
+
+.stat.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--accent-bright) 0%, var(--amber) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+/* ── Feature Pills ── */
+.feature-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+}
+
+.pill {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--fg-dim);
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transform: translateY(12px) scale(0.95);
+  transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo), border-color 0.3s ease, background 0.3s ease;
+}
+
+.pill.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.pill:hover {
+  border-color: rgba(139,92,246,0.3);
+  background: rgba(139,92,246,0.08);
+  color: var(--accent-bright);
+}
+
+/* ── Section Divider ── */
+.scene-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, rgba(139,92,246,0.15) 50%, transparent 95%);
+  position: relative;
+}
+
+.scene-divider::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ── Parallax Floating Elements ── */
+.float-shape {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.float-shape-1 {
+  width: 300px;
+  height: 300px;
+  top: 20%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+  filter: blur(40px);
+}
+
+.float-shape-2 {
+  width: 200px;
+  height: 200px;
+  bottom: 10%;
+  left: -3%;
+  background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
+  filter: blur(40px);
+}
+
+.float-shape-3 {
+  width: 150px;
+  height: 150px;
+  top: 40%;
+  left: 10%;
+  background: radial-gradient(circle, rgba(52,211,153,0.04) 0%, transparent 70%);
+  filter: blur(30px);
+}
+
+/* ── CTA Scene ── */
 .cta-scene {
   text-align: center;
   flex-direction: column;
   gap: 2rem;
+  position: relative;
+}
+
+.cta-scene::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 60%);
+  filter: blur(100px);
+  pointer-events: none;
 }
 
 .cta-scene .scene-title {
-  background: linear-gradient(135deg, var(--fg) 30%, var(--accent) 100%);
+  background: linear-gradient(135deg, var(--fg) 20%, var(--accent-bright) 60%, var(--amber) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -319,20 +640,22 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.9rem 2rem;
+  padding: 1rem 2.2rem;
   background: var(--fg);
   color: var(--bg);
-  border-radius: 12px;
+  border-radius: 14px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s ease;
   margin-top: 1rem;
 }
 
 .app-store-badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 40px rgba(167,139,250,0.3);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 60px -10px rgba(139,92,246,0.35);
 }
 
 .app-store-badge svg {
@@ -340,108 +663,23 @@ body {
   height: 24px;
 }
 
-/* ── Typewriter effect ── */
-.typewriter {
-  overflow: hidden;
-  border-right: 2px solid var(--accent);
-  white-space: nowrap;
-  animation: typing 2.5s steps(30) forwards, blinkCaret 0.8s step-end infinite;
-  width: 0;
-  max-width: fit-content;
-}
-
-.typewriter.active {
-  width: 100%;
-}
-
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes blinkCaret {
-  from, to { border-color: transparent; }
-  50% { border-color: var(--accent); }
-}
-
-/* ── Feature pills ── */
-.feature-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
-}
-
-.pill {
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
-  font-size: 0.8rem;
-  color: var(--muted);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.pill.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ── Stats bar ── */
-.stats-bar {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  padding: 3rem 2rem;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 2.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--green) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.stat-label {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-top: 0.25rem;
-}
-
-/* ── Divider lines ── */
-.scene-divider {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(167,139,250,0.2), transparent);
-}
-
-/* ── Nav ── */
+/* ── Navigation ── */
 .fixed-nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 1rem 2rem;
+  padding: 0.9rem 2.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(9,9,11,0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(5,5,7,0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
   transform: translateY(-100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s var(--ease-out-expo);
 }
 
 .fixed-nav.show {
@@ -449,50 +687,90 @@ body {
 }
 
 .nav-logo {
+  font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.1rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
 .nav-logo span {
-  color: var(--accent);
+  color: var(--accent-bright);
 }
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: center;
 }
 
 .nav-links a {
-  color: var(--muted);
+  color: var(--fg-dim);
   text-decoration: none;
-  font-size: 0.85rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
   transition: color 0.2s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent-bright);
+  transition: width 0.3s var(--ease-out-expo);
 }
 
 .nav-links a:hover {
   color: var(--fg);
 }
 
-.nav-cta {
-  padding: 0.5rem 1.2rem;
-  background: var(--accent);
-  color: var(--bg) !important;
-  border-radius: 8px;
-  font-weight: 600;
+.nav-links a:hover::after {
+  width: 100%;
 }
 
-/* ── Reduced motion ── */
+.nav-cta {
+  padding: 0.5rem 1.3rem !important;
+  background: var(--accent) !important;
+  color: var(--fg) !important;
+  border-radius: 8px;
+  font-weight: 600 !important;
+}
+
+.nav-cta::after { display: none !important; }
+
+.nav-cta:hover {
+  background: var(--accent-bright) !important;
+}
+
+/* ── Footer ── */
+.site-footer {
+  text-align: center;
+  padding: 2.5rem 2rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  background: var(--bg-elevated);
+}
+
+/* ── Reduced Motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .hero-phone { animation: none; }
+  .hero-phone { animation: none !important; }
+  .hero-phone .phone-frame { animation: none !important; }
   .scene-text { opacity: 1; transform: none; }
   .pill { opacity: 1; transform: none; }
+  .hero-badge, .hero-title, .hero-subtitle, .hero-phone { opacity: 1; transform: none; }
 }
 
 /* ── Mobile ── */
@@ -504,35 +782,42 @@ body {
   }
   .scene-inner.reverse { direction: ltr; }
   .scene-desc { margin: 0 auto; }
+  .scene-label { justify-content: center; }
+  .scene-label::before { display: none; }
   .phone-frame {
     --phone-w: 220px;
     --phone-h: 460px;
   }
   .phone-stack {
-    width: 360px;
-    height: 400px;
+    width: 340px;
+    height: 380px;
   }
   .stats-bar {
-    gap: 1.5rem;
+    gap: 2rem;
     flex-wrap: wrap;
   }
   .nav-links { display: none; }
   .feature-pills { justify-content: center; }
+  .hero-orb-1 { width: 400px; height: 400px; }
+  .hero-orb-2, .hero-orb-3 { display: none; }
+  .float-shape { display: none; }
 }
 
 @media (max-width: 480px) {
-  .scene { padding: 3rem 1.25rem; }
+  .scene { padding: 4rem 1.25rem; }
   .phone-frame {
     --phone-w: 180px;
     --phone-h: 380px;
   }
+  .stats-bar { gap: 1.5rem; padding: 3rem 1rem; }
+  .stat-value { font-size: 2.2rem; }
 }
 </style>
 </head>
 <body>
 
 <!-- Fixed nav (appears on scroll) -->
-<nav class="fixed-nav" id="nav">
+<nav class="fixed-nav" id="nav" role="navigation" aria-label="Main navigation">
   <div class="nav-logo">S<span>.</span>A<span>.</span>P<span>.</span>I<span>.</span>E<span>.</span>N<span>.</span></div>
   <div class="nav-links">
     <a href="#features">Features</a>
@@ -545,7 +830,10 @@ body {
 
 <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
 <section class="hero-scene" id="hero">
-  <div class="hero-bg-glow"></div>
+  <div class="hero-orb hero-orb-1" data-speed="0.02"></div>
+  <div class="hero-orb hero-orb-2" data-speed="0.04"></div>
+  <div class="hero-orb hero-orb-3" data-speed="0.03"></div>
+  <div class="hero-grid" data-speed="0.01"></div>
 
   <div class="hero-badge">
     <span class="dot"></span>
@@ -558,7 +846,7 @@ body {
   </h1>
 
   <p class="hero-subtitle">
-    One AI agent that remembers, sees, automates, and acts.
+    One AI agent that remembers, sees, automates, and acts.<br>
     Not a chatbot — a companion.
   </p>
 
@@ -566,28 +854,29 @@ body {
     <div class="phone-frame">
       <div class="phone-notch"></div>
       <img src="assets/onboarding-welcome.png" alt="S.A.P.I.E.N. welcome screen" loading="eager">
+      <div class="phone-reflection"></div>
     </div>
   </div>
 
   <div class="scroll-hint">
-    <span>scroll to explore</span>
-    <div class="arrow"></div>
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
 <!-- Stats bar -->
-<div class="stats-bar">
+<div class="stats-bar" id="stats">
   <div class="stat">
     <div class="stat-value" data-count="8">0</div>
-    <div class="stat-label">Feature scenes</div>
+    <div class="stat-label">Feature Scenes</div>
   </div>
   <div class="stat">
     <div class="stat-value" data-count="47">0</div>
-    <div class="stat-label">AI models</div>
+    <div class="stat-label">AI Models</div>
   </div>
   <div class="stat">
     <div class="stat-value">&lt;200ms</div>
-    <div class="stat-label">Response time</div>
+    <div class="stat-label">Response Time</div>
   </div>
   <div class="stat">
     <div class="stat-value">∞</div>
@@ -597,6 +886,9 @@ body {
 
 <!-- ═══════════════════════════════ AI CHAT ═══════════════════════════════ -->
 <section class="scene" id="ai">
+  <div class="float-shape float-shape-1" data-speed="0.03"></div>
+  <div class="float-shape float-shape-3" data-speed="0.05"></div>
+
   <div class="scene-inner">
     <div class="scene-text" data-animate>
       <div class="scene-label">01 — Intelligence</div>
@@ -616,9 +908,10 @@ body {
       </div>
     </div>
     <div class="phone-wrapper">
-      <div class="phone-frame" data-parallax>
+      <div class="phone-frame" data-parallax data-depth="0.5">
         <div class="phone-notch"></div>
         <img src="assets/ai-chat.png" alt="AI chat interface with model selector" loading="lazy">
+        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -628,6 +921,9 @@ body {
 
 <!-- ═══════════════════════════════ BROWSING ═══════════════════════════════ -->
 <section class="scene" id="browse">
+  <div class="float-shape float-shape-2" data-speed="0.04"></div>
+  <div class="float-shape float-shape-1" data-speed="0.02" style="left:auto; right:80%; top:60%;"></div>
+
   <div class="scene-inner reverse">
     <div class="scene-text" data-animate>
       <div class="scene-label">02 — Agentic Browsing</div>
@@ -638,15 +934,16 @@ body {
       </p>
       <div class="feature-pills">
         <span class="pill">Vision AI</span>
-        <span class="pill">DOM extraction</span>
+        <span class="pill">DOM Extraction</span>
         <span class="pill">Auto-fill</span>
-        <span class="pill">Screenshot analysis</span>
+        <span class="pill">Screenshot Analysis</span>
       </div>
     </div>
     <div class="phone-wrapper">
-      <div class="phone-frame" data-parallax>
+      <div class="phone-frame" data-parallax data-depth="0.6">
         <div class="phone-notch"></div>
         <img src="assets/ai-browser.png" alt="AI browser with tool call interface" loading="lazy">
+        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -656,6 +953,9 @@ body {
 
 <!-- ═══════════════════════════════ MEMORY ═══════════════════════════════ -->
 <section class="scene" id="memory">
+  <div class="float-shape float-shape-3" data-speed="0.03" style="left:auto; right:5%; top:30%;"></div>
+  <div class="float-shape float-shape-2" data-speed="0.05" style="left:80%; bottom:20%;"></div>
+
   <div class="scene-inner">
     <div class="scene-text" data-animate>
       <div class="scene-label">03 — Persistent Memory</div>
@@ -672,9 +972,10 @@ body {
       </div>
     </div>
     <div class="phone-wrapper">
-      <div class="phone-frame" data-parallax>
+      <div class="phone-frame" data-parallax data-depth="0.4">
         <div class="phone-notch"></div>
         <img src="assets/memories.png" alt="Memories and knowledge management" loading="lazy">
+        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -684,6 +985,9 @@ body {
 
 <!-- ═══════════════════════════════ AUTOMATIONS ═══════════════════════════════ -->
 <section class="scene" id="automate">
+  <div class="float-shape float-shape-1" data-speed="0.04" style="right:auto; left:60%; top:20%;"></div>
+  <div class="float-shape float-shape-3" data-speed="0.02"></div>
+
   <div class="scene-inner reverse">
     <div class="scene-text" data-animate>
       <div class="scene-label">04 — Automations</div>
@@ -693,16 +997,17 @@ body {
         S.A.P.I.E.N. builds the workflow, schedules it, and runs it forever.
       </p>
       <div class="feature-pills">
-        <span class="pill">Natural language</span>
+        <span class="pill">Natural Language</span>
         <span class="pill">Scheduled</span>
         <span class="pill">Event-driven</span>
         <span class="pill">Multi-step</span>
       </div>
     </div>
     <div class="phone-wrapper">
-      <div class="phone-frame" data-parallax>
+      <div class="phone-frame" data-parallax data-depth="0.55">
         <div class="phone-notch"></div>
         <img src="assets/automations.png" alt="Automations management screen" loading="lazy">
+        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -712,6 +1017,9 @@ body {
 
 <!-- ═══════════════════════════════ MULTI-DEVICE ═══════════════════════════════ -->
 <section class="scene" id="features">
+  <div class="float-shape float-shape-2" data-speed="0.03" style="left:70%; top:10%;"></div>
+  <div class="float-shape float-shape-1" data-speed="0.05" style="left:10%; bottom:15%;"></div>
+
   <div class="scene-inner">
     <div class="scene-text" data-animate>
       <div class="scene-label">05 — Multi-Device</div>
@@ -731,14 +1039,17 @@ body {
       <div class="phone-frame" data-parallax data-depth="0.3">
         <div class="phone-notch"></div>
         <img src="assets/onboarding-complete.png" alt="S.A.P.I.E.N. onboarding complete" loading="lazy">
+        <div class="phone-reflection"></div>
       </div>
       <div class="phone-frame" data-parallax data-depth="0.6">
         <div class="phone-notch"></div>
         <img src="assets/settings.png" alt="S.A.P.I.E.N. Cloud settings" loading="lazy">
+        <div class="phone-reflection"></div>
       </div>
       <div class="phone-frame" data-parallax data-depth="0.9">
         <div class="phone-notch"></div>
         <img src="assets/sign-in.png" alt="S.A.P.I.E.N. Cloud sign in" loading="lazy">
+        <div class="phone-reflection"></div>
       </div>
     </div>
   </div>
@@ -759,95 +1070,131 @@ body {
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       Download for iOS
     </a>
-    <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--muted);">
+    <p style="margin-top: 1.25rem; font-size: 0.78rem; color: var(--muted); font-weight: 300;">
       Also coming to macOS, Apple Watch, and web.
     </p>
   </div>
 </section>
 
 <!-- Footer -->
-<footer style="text-align: center; padding: 2rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05);">
-  S.A.P.I.E.N. © 2026 · Built by Sitegeist
+<footer class="site-footer">
+  S.A.P.I.E.N. &copy; 2026 &middot; Built by Sitegeist
 </footer>
 
 <script>
-// ── Scroll observer for text animations ──
-const observer = new IntersectionObserver((entries) => {
+// ── Scroll Observer for Text Animations ──
+const textObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
-      // Animate pills
       const pills = entry.target.querySelectorAll('.pill');
       pills.forEach((pill, i) => {
-        setTimeout(() => pill.classList.add('show'), i * 100);
+        setTimeout(() => pill.classList.add('show'), i * 80 + 200);
       });
     }
   });
-}, { threshold: 0.2 });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
-document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+document.querySelectorAll('[data-animate]').forEach(el => textObserver.observe(el));
 
-// ── Parallax on scroll ──
-let ticking = false;
-
-function onScroll() {
-  if (ticking) return;
-  ticking = true;
-  requestAnimationFrame(() => {
-    const scrollY = window.scrollY;
-    const vh = window.innerHeight;
-
-    // Show/hide nav
-    document.getElementById('nav').classList.toggle('show', scrollY > vh * 0.5);
-
-    // Phone parallax
-    document.querySelectorAll('[data-parallax]').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const center = rect.top + rect.height / 2;
-      const progress = (vh / 2 - center) / vh;
-      const depth = parseFloat(el.dataset.depth) || 0.5;
-      const translateY = progress * 60 * depth;
-      const rotateX = progress * -8 * depth;
-      const rotateY = progress * 5 * depth;
-      const scale = 1 - Math.abs(progress) * 0.05 * depth;
-
-      el.style.transform = `translateY(${translateY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+// ── Stats Observer ──
+const statsObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    animateCounters();
+    document.querySelectorAll('.stat').forEach((stat, i) => {
+      setTimeout(() => stat.classList.add('visible'), i * 120);
     });
+    statsObserver.disconnect();
+  }
+}, { threshold: 0.4 });
+statsObserver.observe(document.querySelector('.stats-bar'));
 
-    ticking = false;
-  });
-}
-
-window.addEventListener('scroll', onScroll, { passive: true });
-
-// ── Counter animation ──
 function animateCounters() {
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.dataset.count);
-    let current = 0;
-    const increment = target / 40;
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        el.textContent = target;
-        clearInterval(timer);
-      } else {
-        el.textContent = Math.floor(current);
-      }
-    }, 30);
+    const duration = 1200;
+    const start = performance.now();
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
   });
 }
 
-// Trigger counters when stats bar is visible
-const statsObs = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) {
-    animateCounters();
-    statsObs.disconnect();
-  }
-}, { threshold: 0.5 });
-statsObs.observe(document.querySelector('.stats-bar'));
+// ── Parallax Engine ──
+let ticking = false;
+const vh = () => window.innerHeight;
 
-// ── Smooth scroll for nav links ──
+// Store base transforms for elements that have CSS-defined transforms
+// Capture eagerly before animations start, so we get the original CSS transform
+const baseTransforms = new Map();
+document.querySelectorAll('.hero-orb, .hero-grid, .float-shape, .phone-stack .phone-frame').forEach(el => {
+  // Temporarily disable animation to read the base transform
+  const anim = el.style.animation;
+  el.style.animation = 'none';
+  const computed = getComputedStyle(el).transform;
+  el.style.animation = anim;
+  baseTransforms.set(el, computed === 'none' ? '' : computed);
+});
+
+function updateParallax() {
+  const scrollY = window.scrollY;
+  const viewportH = vh();
+
+  // Nav visibility
+  document.getElementById('nav').classList.toggle('show', scrollY > viewportH * 0.5);
+
+  // Phone parallax — 3D tilt based on viewport position
+  // Only apply if mouse is NOT hovering the phone (mouse tilt takes priority)
+  document.querySelectorAll('[data-parallax]').forEach(el => {
+    if (el.matches(':hover')) return; // mouse tilt handles it
+
+    // Preserve CSS layout transforms (e.g., phone-stack fan layout)
+    const base = baseTransforms.get(el) || '';
+
+    const rect = el.getBoundingClientRect();
+    const center = rect.top + rect.height / 2;
+    const progress = (viewportH / 2 - center) / viewportH;
+    const depth = parseFloat(el.dataset.depth) || 0.5;
+    const translateY = progress * 50 * depth;
+    const rotateX = progress * -6 * depth;
+    const rotateY = progress * 4 * depth;
+    const scale = 1 - Math.abs(progress) * 0.04 * depth;
+
+    if (base) {
+      // Stack phones: apply scroll parallax as wrapper around the base transform
+      el.style.transform = `translateY(${translateY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale}) ${base}`;
+    } else {
+      el.style.transform = `translateY(${translateY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+    }
+  });
+
+  // Floating shape + hero orb parallax — preserve base CSS transforms
+  document.querySelectorAll('.float-shape, .hero-orb, .hero-grid').forEach(el => {
+    const speed = parseFloat(el.dataset.speed) || 0.03;
+    // Use scrollY relative to element's static position for offset
+    const offset = scrollY * speed * -0.5;
+    const base = getBaseTransform(el);
+    el.style.transform = base
+      ? `${base} translateY(${offset}px)`
+      : `translateY(${offset}px)`;
+  });
+
+  ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    ticking = true;
+    requestAnimationFrame(updateParallax);
+  }
+}, { passive: true });
+
+// ── Smooth Scroll for Nav Links ──
 document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
@@ -856,8 +1203,31 @@ document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
   });
 });
 
-// ── Initial scroll trigger ──
-onScroll();
+// ── Mouse Tilt on Phone Frames ──
+// Combine scroll parallax + mouse tilt into one transform to avoid flicker
+document.querySelectorAll('.phone-frame').forEach(phone => {
+  phone.addEventListener('mousemove', e => {
+    const rect = phone.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    // Merge scroll parallax with mouse tilt, preserve base layout transform
+    const viewportH = vh();
+    const center = rect.top + rect.height / 2;
+    const progress = (viewportH / 2 - center) / viewportH;
+    const depth = parseFloat(phone.dataset.depth) || 0.5;
+    const scrollTranslateY = progress * 50 * depth;
+    const base = baseTransforms.get(phone) || '';
+    const tilt = `perspective(800px) translateY(${scrollTranslateY}px) rotateY(${x * 10 + progress * 4 * depth}deg) rotateX(${-y * 10 + progress * -6 * depth}deg) scale(${1.02 - Math.abs(progress) * 0.02 * depth})`;
+    phone.style.transform = base ? `${tilt} ${base}` : tilt;
+  });
+  phone.addEventListener('mouseleave', () => {
+    // Let scroll handler restore the scroll parallax transform on next frame
+    requestAnimationFrame(updateParallax);
+  });
+});
+
+// ── Initial Trigger ──
+updateParallax();
 </script>
 
 </body>
