@@ -1125,7 +1125,7 @@ function updateParallax() {
     const speed = parseFloat(el.dataset.speed) || 0.03;
     // Use scrollY relative to element's static position for offset
     const offset = scrollY * speed * -0.5;
-    const base = getBaseTransform(el);
+    const base = baseTransforms.get(el) || '';
     el.style.transform = base
       ? `${base} translateY(${offset}px)`
       : `translateY(${offset}px)`;
