@@ -32,6 +32,7 @@
   --amber: #f59e0b;
   --green: #34d399;
   --screen-w: 280px;
+  --nav-h: 56px;
   --font-display: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -706,6 +707,92 @@ body::after {
   background: var(--accent-bright) !important;
 }
 
+/* ── Mobile Menu ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 101;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--fg);
+  border-radius: 2px;
+  transition: transform 0.3s var(--ease-out-expo), opacity 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(5,5,7,0.97);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-menu a {
+  color: var(--fg);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+
+.mobile-menu a:hover,
+.mobile-menu a:active {
+  color: var(--accent-bright);
+}
+
+.mobile-menu .nav-cta-mobile {
+  margin-top: 1rem;
+  padding: 0.75rem 2rem;
+  background: var(--accent);
+  color: var(--fg);
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.mobile-menu .nav-cta-mobile:hover {
+  background: var(--accent-bright);
+}
+
 /* ── Footer ── */
 .site-footer {
   text-align: center;
@@ -732,7 +819,7 @@ body::after {
   .hero-badge, .hero-title, .hero-subtitle, .hero-phone { opacity: 1; transform: none; }
 }
 
-/* ── Mobile ── */
+/* ── Tablet ── */
 @media (max-width: 900px) {
   .scene-inner {
     grid-template-columns: 1fr;
@@ -744,30 +831,126 @@ body::after {
   .scene-label { justify-content: center; }
   .scene-label::before { display: none; }
   .phone-frame {
-    --screen-w: 220px;
+    --screen-w: min(240px, 55vw);
   }
   .screen-stack {
-    width: 300px;
+    width: min(340px, 80vw);
     height: 380px;
+  }
+  .screen-stack .phone-frame:nth-child(1) {
+    transform: translate(-70%, -35%) rotateY(10deg) rotateX(-3deg) scale(0.7);
+  }
+  .screen-stack .phone-frame:nth-child(2) {
+    transform: translate(-40%, -50%) rotateY(-4deg) rotateX(1deg) scale(0.85);
+  }
+  .screen-stack .phone-frame:nth-child(3) {
+    transform: translate(-10%, -65%) rotateY(-14deg) rotateX(4deg) scale(0.65);
   }
   .stats-bar {
     gap: 2rem;
     flex-wrap: wrap;
   }
   .nav-links { display: none; }
+  .hamburger { display: flex; }
   .feature-pills { justify-content: center; }
   .hero-orb-1 { width: 400px; height: 400px; }
   .hero-orb-2, .hero-orb-3 { display: none; }
   .float-shape { display: none; }
+  .fixed-nav {
+    padding: 0.8rem 1.5rem;
+  }
+  .hero-title {
+    font-size: clamp(2.8rem, 10vw, 5rem);
+  }
+  .hero-phone .phone-frame {
+    --screen-w: min(260px, 60vw);
+  }
 }
 
-@media (max-width: 480px) {
-  .scene { padding: 4rem 1.25rem; }
-  .phone-frame {
-    --screen-w: 160px;
+/* ── Small phone ── */
+@media (max-width: 600px) {
+  .scene {
+    padding: 4rem 1.25rem;
+    min-height: auto;
   }
-  .stats-bar { gap: 1.5rem; padding: 3rem 1rem; }
-  .stat-value { font-size: 2.2rem; }
+  .scene-inner {
+    gap: 2rem;
+  }
+  .phone-frame {
+    --screen-w: min(200px, 52vw);
+  }
+  .hero-scene {
+    padding: 0 1.25rem;
+  }
+  .hero-badge {
+    margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-size: clamp(2.4rem, 12vw, 4rem);
+    margin-bottom: 1.25rem;
+  }
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+  .hero-phone {
+    margin-top: 1rem;
+  }
+  .hero-phone .phone-frame {
+    --screen-w: min(240px, 65vw);
+  }
+  .scroll-hint {
+    bottom: 1.5rem;
+  }
+  .stats-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1rem;
+    padding: 2.5rem 1.5rem;
+  }
+  .stat-value {
+    font-size: 2.2rem;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+  }
+  .scene-title {
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+  }
+  .scene-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  .screen-stack {
+    width: min(280px, 85vw);
+    height: 300px;
+  }
+  .app-store-badge {
+    padding: 0.85rem 1.8rem;
+    font-size: 0.95rem;
+  }
+  .feature-pills {
+    gap: 0.4rem;
+  }
+  .pill {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.7rem;
+  }
+}
+
+/* ── Tiny phone (SE, 320px) ── */
+@media (max-width: 380px) {
+  .scene { padding: 3rem 1rem; }
+  .hero-title { font-size: 2.2rem; }
+  .hero-subtitle { font-size: 0.88rem; }
+  .phone-frame { --screen-w: min(180px, 55vw); }
+  .hero-phone .phone-frame { --screen-w: min(210px, 65vw); }
+  .screen-stack { width: min(250px, 85vw); height: 260px; }
+  .stats-bar { gap: 1rem 0.75rem; padding: 2rem 1rem; }
+  .stat-value { font-size: 1.8rem; }
+  .scene-title { font-size: 1.6rem; }
+  .scene-desc { font-size: 0.88rem; }
+  .app-store-badge { padding: 0.75rem 1.5rem; font-size: 0.88rem; }
 }
 </style>
 </head>
@@ -785,7 +968,20 @@ body::after {
     <a href="#memory">Memory</a>
     <a href="#download" class="nav-cta">Download</a>
   </div>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+  <a href="#features">Features</a>
+  <a href="#ai">AI</a>
+  <a href="#automate">Automate</a>
+  <a href="#memory">Memory</a>
+  <a href="#download" class="nav-cta-mobile">Download for iOS</a>
+</div>
 
 <main id="main">
 
@@ -1142,36 +1338,75 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // ── Smooth Scroll for Nav Links ──
+function smoothScrollTo(href) {
+  const target = document.querySelector(href);
+  if (target) target.scrollIntoView({ behavior: 'smooth' });
+}
+
 document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    smoothScrollTo(a.getAttribute('href'));
   });
 });
 
-// ── Mouse Tilt on Phone Frames ──
-// Combine scroll parallax + mouse tilt into one transform to avoid flicker
-document.querySelectorAll('.phone-frame').forEach(phone => {
-  phone.addEventListener('mousemove', e => {
-    const rect = phone.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    // Merge scroll parallax with mouse tilt, preserve base layout transform
-    const viewportH = vh();
-    const center = rect.top + rect.height / 2;
-    const progress = (viewportH / 2 - center) / viewportH;
-    const depth = parseFloat(phone.dataset.depth) || 0.5;
-    const scrollTranslateY = progress * 50 * depth;
-    const base = baseTransforms.get(phone) || '';
-    const tilt = `perspective(800px) translateY(${scrollTranslateY}px) rotateY(${x * 10 + progress * 4 * depth}deg) rotateX(${-y * 10 + progress * -6 * depth}deg) scale(${1.02 - Math.abs(progress) * 0.02 * depth})`;
-    phone.style.transform = base ? `${tilt} ${base}` : tilt;
-  });
-  phone.addEventListener('mouseleave', () => {
-    // Let scroll handler restore the scroll parallax transform on next frame
-    requestAnimationFrame(updateParallax);
+// ── Mobile Menu ──
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+let menuOpen = false;
+
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  hamburger.classList.toggle('active', menuOpen);
+  mobileMenu.classList.toggle('open', menuOpen);
+  hamburger.setAttribute('aria-expanded', menuOpen);
+  document.body.style.overflow = menuOpen ? 'hidden' : '';
+}
+
+hamburger.addEventListener('click', toggleMenu);
+
+// Close menu on link click
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    toggleMenu();
+    setTimeout(() => smoothScrollTo(a.getAttribute('href')), 100);
   });
 });
+
+// ── Disable heavy effects on touch/mobile ──
+const isMobile = 'ontouchstart' in window || window.innerWidth < 900;
+
+// ── Mouse Tilt on Phone Frames (desktop only) ──
+// Combine scroll parallax + mouse tilt into one transform to avoid flicker
+if (!isMobile) {
+  document.querySelectorAll('.phone-frame').forEach(phone => {
+    phone.addEventListener('mousemove', e => {
+      const rect = phone.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      // Merge scroll parallax with mouse tilt, preserve base layout transform
+      const viewportH = vh();
+      const center = rect.top + rect.height / 2;
+      const progress = (viewportH / 2 - center) / viewportH;
+      const depth = parseFloat(phone.dataset.depth) || 0.5;
+      const scrollTranslateY = progress * 50 * depth;
+      const base = baseTransforms.get(phone) || '';
+      const tilt = `perspective(800px) translateY(${scrollTranslateY}px) rotateY(${x * 10 + progress * 4 * depth}deg) rotateX(${-y * 10 + progress * -6 * depth}deg) scale(${1.02 - Math.abs(progress) * 0.02 * depth})`;
+      phone.style.transform = base ? `${tilt} ${base}` : tilt;
+    });
+    phone.addEventListener('mouseleave', () => {
+      requestAnimationFrame(updateParallax);
+    });
+  });
+} else {
+  // On mobile, disable parallax transforms for performance
+  // and remove will-change to free GPU memory
+  document.querySelectorAll('[data-parallax]').forEach(el => {
+    el.style.transform = '';
+    el.style.willChange = 'auto';
+  });
+}
 
 // ── Initial Trigger ──
 updateParallax();
