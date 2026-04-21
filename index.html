@@ -716,6 +716,8 @@ body::after {
   width: 28px;
   height: 28px;
   cursor: pointer;
+  background: none;
+  border: none;
   -webkit-tap-highlight-color: transparent;
   z-index: 101;
 }
@@ -1385,7 +1387,7 @@ function toggleMenu() {
   }
 }
 
-// Focus trap inside mobile menu — declare before toggleMenu so focus management works
+// Menu link refs for focus trap (declared after toggleMenu — still works because toggleMenu is only called via event handlers)
 const menuLinks = mobileMenu.querySelectorAll('a');
 const firstLink = menuLinks[0];
 const lastLink = menuLinks[menuLinks.length - 1];
