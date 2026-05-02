@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Transparency — S.A.P.I.E.N.</title>
+<meta name="description" content="Digital Services Act compliance information for S.A.P.I.E.N.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #050507;
+  --bg-elevated: #0c0c10;
+  --fg: #eeeaef;
+  --fg-dim: #a09caf;
+  --muted: #6b6578;
+  --accent: #8b5cf6;
+  --accent-bright: #a78bfa;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  padding: 6rem 2rem;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--fg);
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 3rem;
+  transition: color 0.3s ease;
+}
+
+.back-link:hover {
+  color: var(--accent-bright);
+}
+
+.back-link::before {
+  content: '\2190';
+  font-size: 1rem;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+h1 .accent {
+  background: linear-gradient(135deg, var(--accent-bright), #e879f9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: var(--fg-dim);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+}
+
+section {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--fg);
+}
+
+p {
+  color: var(--fg-dim);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.status-not-applicable {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  background: rgba(255,255,255,0.03);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.footer p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">Back to S.A.P.I.E.N.</a>
+
+  <h1>Digital Services Act<br><span class="accent">Labels & Markings</span></h1>
+  <p class="subtitle">Transparency disclosure under EU Regulation 2022/2065 for the S.A.P.I.E.N. iOS application.</p>
+
+  <section>
+    <span class="status-not-applicable">Not Applicable</span>
+    <h3>User-Generated Content</h3>
+    <p>S.A.P.I.E.N. does not host, display, or facilitate user-generated content. It is a personal AI agent that operates locally on your device. There are no public feeds, comment sections, forums, or any mechanism for users to publish content to other users.</p>
+  </section>
+
+  <section>
+    <span class="status-not-applicable">Not Applicable</span>
+    <h3>Recommender Systems</h3>
+    <p>S.A.P.I.E.N. does not employ algorithmic recommender systems. It does not suggest content, products, accounts, or any items to users based on profiling, behavior tracking, or automated decision-making. All interactions are user-initiated.</p>
+  </section>
+
+  <section>
+    <span class="status-not-applicable">Not Applicable</span>
+    <h3>Content Moderation</h3>
+    <p>As S.A.P.I.E.N. does not host user-facing content, there are no content moderation practices or policies to disclose. The app does not accept, review, or publish user submissions.</p>
+  </section>
+
+  <section>
+    <span class="status-not-applicable">Not Applicable</span>
+    <h3>Advertising</h3>
+    <p>S.A.P.I.E.N. does not serve advertisements or engage in ad-targeting. No user data is collected for advertising or profiling purposes.</p>
+  </section>
+
+  <div class="footer">
+    <p>This page is provided in compliance with the EU Digital Services Act (Regulation 2022/2065).</p>
+    <p>Last updated: May 2026</p>
+  </div>
+</div>
+
+</body>
+</html>
